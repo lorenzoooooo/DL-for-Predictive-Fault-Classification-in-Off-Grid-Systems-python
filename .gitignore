@@ -1,0 +1,6 @@
+*.txt
+*.prf
+digil/
+iotbox/
+iotbox-digil/
+risultati_int/*
