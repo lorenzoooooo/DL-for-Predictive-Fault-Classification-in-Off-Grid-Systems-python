@@ -1,0 +1,7 @@
+tensorflow v 2.8.0
+python     v 3.8.12
+
+
+comandi:
+    pip install --upgrade pip
+    pip install tensorflow

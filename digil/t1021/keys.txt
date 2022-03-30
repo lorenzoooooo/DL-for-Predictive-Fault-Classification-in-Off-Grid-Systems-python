@@ -1,0 +1,1 @@
+['irradiation', 'mincellvoltage', 'soc', 'batterycurrentin', 'batterycurrentout', 'panelpower', 'outputcurrentmppt']

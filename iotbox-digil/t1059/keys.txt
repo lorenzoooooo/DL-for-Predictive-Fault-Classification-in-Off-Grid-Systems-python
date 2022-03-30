@@ -1,0 +1,1 @@
+['irradiation', 'mincellvoltage', 'soc', 'dailyyield', 'consumercurrent', 'consumervoltage', 'batterycurrentin', 'batterycurrentout', 'outputvoltagemppt', 'outputcurrentmppt', 'panelpower', 'maxcellvoltage']
