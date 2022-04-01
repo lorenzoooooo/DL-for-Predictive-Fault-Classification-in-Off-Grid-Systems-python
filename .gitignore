@@ -1,5 +1,7 @@
 *.txt
 *.prf
+*.pkl
+*.pyc
 digil/
 iotbox/
 iotbox-digil/
