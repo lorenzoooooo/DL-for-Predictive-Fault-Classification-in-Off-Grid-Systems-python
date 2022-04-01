@@ -2,6 +2,7 @@
 *.prf
 *.pkl
 *.pyc
+__pycache__/
 digil/
 iotbox/
 iotbox-digil/
