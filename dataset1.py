@@ -41,10 +41,10 @@ def dataset1():
             # c=X_patologiche.shape
             for i in range(len(sane)):
                 X_sane.append(X[sane[i]])
-                Y_sane=[*Y_sane, '1']
+                Y_sane=[*Y_sane, 1]
             for i in range(len(patologiche)):
                 X_patologiche.append(X[patologiche[i]])
-                Y_patologiche=[*Y_patologiche, '0']
+                Y_patologiche=[*Y_patologiche, 0]
             tralicci=[*tralicci, torre]                          
             a = fileID.readline()
             a=a.rstrip('\n')
@@ -53,7 +53,7 @@ def dataset1():
         
         ''' partizione dinamica '''
         Y=[*Y_sane, *Y_patologiche]
-        Y=tf.convert_to_tensor(Y)
+        # Y=tf.convert_to_tensor(Y)
         X=[*X_sane, *X_patologiche]
         X=tf.convert_to_tensor(X)
         

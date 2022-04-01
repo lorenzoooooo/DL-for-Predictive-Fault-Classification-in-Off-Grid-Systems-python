@@ -41,14 +41,15 @@ from sklearn.metrics import accuracy_score
 
 
 ''' load '''
-dataset_path=r'C:\\Users\\UTENTE\\Desktop\\py\\risultati_int\\t13008_t16399_t1059_t1021\\mincellvoltage_panelpower\\1_1_3_3_0.25\\'
+dataset_path=r'C:\\Users\\UTENTE\\Desktop\\py\\risultati_int\\t13008_t16399_t1059_t1021\\mincellvoltage_panelpower\\1_1_7_3_0.25\\'
 RESULT=pickle.load(open(dataset_path+'dataset.pkl','rb'))
 XTrain=RESULT['XTrain']
 YTrain=RESULT['YTrain']
 XTest=RESULT['XTest']
 YTest=RESULT['YTest']
 path=RESULT['path']
-
+# YTrain=tf.reshape(YTrain,[len(YTrain),2])
+# YTest=tf.reshape(YTest,[len(YTest),2])
 ''' check '''
 # plt.figure
 # d=random.randint(0,len(XTrain))
@@ -62,8 +63,8 @@ path=RESULT['path']
 inputSize = 2
 numHiddenUnits =15
 numClasses = 2
-maxEpochs = 10
-miniBatchSize =22
+maxEpochs = 12
+miniBatchSize =31
 lr=0.04
 
 ''' folder in where to save'''
@@ -75,9 +76,14 @@ if not os.path.isdir(dataset_path + "\\" + file):
 initializer = tf.keras.initializers.GlorotNormal()
 model=Sequential()
 model.add(Bidirectional(LSTM(numHiddenUnits,
-                             return_sequences=False, kernel_initializer=initializer)))      # input_shape=(len(XTrain[0]),inputSize),kernel_initializer=initializer
-model.add(Dense(numClasses))
-# model.add(Softmax())
+                             activation='tanh',
+                             recurrent_activation='sigmoid',
+                             kernel_initializer=initializer,
+                             recurrent_initializer="orthogonal",
+                             unit_forget_bias=True,
+                             return_sequences=False)))      # input_shape=(len(XTrain[0]),inputSize),kernel_initializer=initializer
+model.add(Dense(numClasses,activation='sigmoid'))  
+model.add(Dense(1,activation='sigmoid'))
 model.build([len(XTrain),len(XTrain[0]),inputSize])
 model.summary()
 
@@ -90,7 +96,7 @@ model.summary()
 adam = Adam(lr,epsilon = 1e-08)
 # chk = ModelCheckpoint(filepath=dataset_path + file, monitor='accuracy',
                       # save_best_only=True, mode='max', verbose=1)
-model.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy', 'binary_crossentropy'])
+model.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy','binary_crossentropy'])
 # lrate = LearningRateScheduler(step_decay(maxEpochs, lr))
 # callbacks_list = [lrate]
 
@@ -110,10 +116,14 @@ axs[1].set_title('binary_crossentropy')
 # plt.plot(history.history['binary_crossentropy'])
 
 ''' Test '''
-YPred=list()
+YPred=np.array([])
 # model.load_weights(dataset_path + file)
-probpred = model.predict(XTest)
-YPred=np.argmax(probpred,axis=1)
+pred = model.predict(XTest)
+for i in pred:
+    if i < 0.5:
+        YPred=[*YPred, 0]
+    if i >= 0.5:
+        YPred=[*YPred, 1]
 acc=accuracy_score(YTest, YPred)
 print('accuracy:', acc)
 
